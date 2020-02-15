@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, Response
+from flask import Flask, render_template, request, redirect, url_for, flash, Response, session
 from flask_bootstrap import Bootstrap
 import boto3
 from filters import parse_datetime, get_filetype
@@ -13,10 +13,15 @@ app.jinja_env.filters['file_type']  = get_filetype
 app.secret_key = 'secret'
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    buckets = get_bucket_list()
-    return render_template("index.html", buckets=buckets)
+    if request.method == 'POST':
+        bucket = request.form['bucket']
+        session['bucket'] = bucket
+        return redirect(url_for('files'))
+    else:
+        buckets = get_bucket_list()
+        return render_template("index.html", buckets=buckets)
 
 @app.route('/files')
 def files():
@@ -29,7 +34,7 @@ def files():
 def upload():
     file = request.files['file']
 
-    s3_bucket = get_s3_bucket
+    s3_bucket = get_s3_bucket()
     s3_bucket.Object(file.filename).put(Body=file)
 
     flash('File uploaded successfully')

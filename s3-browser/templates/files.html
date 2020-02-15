@@ -12,7 +12,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12-xs">
-        <h3>Selected bucket is {{ bucket.name }}</h3>
+        <h3>Selected bucket : {{ bucket.name }}</h3>
         <p>Created : {{ bucket.creation_date | datetimeformat }}</p>
 
         {% with messages = get_flashed_messages() %}
@@ -37,12 +37,14 @@
           <tr>
             <th>File Name</th>
             <th>Last Modified</th>
+            <th>Size(Bytes)</th>
             <th>Type</th>
           </tr>
           {% for f in files %}
           <tr>
             <td>{{ f.key }}</td>
             <td>{{ f.last_modified | datetimeformat }}</td>
+            <td>{{ f.size }}</td>
             <td>{{ f.key | file_type }}</td>
             <td>
               <form class="delete-form" action="{{ url_for('delete') }}" method="post">

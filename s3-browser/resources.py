@@ -1,6 +1,6 @@
 import boto3
 from config import s3_key_id, s3_access_key, bucket
-from pprint import pprint
+from flask import session
 
 def _get_s3_resource():
     if s3_key_id and s3_access_key:
@@ -14,7 +14,12 @@ def _get_s3_resource():
 
 def get_s3_bucket():
     s3_resource = _get_s3_resource()
-    return s3_resource.Bucket(bucket)
+    if 'bucket' in session:
+        s3_bucket = session['bucket']
+    else:
+        s3_bucket = bucket
+        
+    return s3_resource.Bucket(s3_bucket)
 
 def get_bucket_list():
     client = boto3.client('s3' )
