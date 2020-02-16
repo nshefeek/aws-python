@@ -1,0 +1,7 @@
+rm -f invoke-lambda.out
+aws lambda invoke \
+--function-name ServerlessQuery \
+--region us-east-2 \
+--log-type Tail invoke-lambda.out
+echo **Return Object**
+cat invoke-lambda.out
