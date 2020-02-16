@@ -4,15 +4,15 @@ from botocore.exceptions import ClientError
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--b', help='Bucket Name')
-parser.add_argument('--o', help='Object Name')
-parser.add_argument('--t', help='Expiration time',type=int, default=3600)
+parser.add_argument('--bucket', '--b', help='Bucket Name')
+parser.add_argument('--object', '--o', help='Object Name')
+parser.add_argument('--time', '--t', help='Expiration time',type=int, default=3600)
 args = parser.parse_args()
 print(args)
 
-bucket_name = args.b
-object_name = args.o
-expiration = args.t
+bucket_name = args.bucket
+object_name = args.object
+expiration = args.time
 
 def create_presigned_url(bucket_name, object_name, expiration=3600):
     """Generate a presigned URL to share an S3 object
